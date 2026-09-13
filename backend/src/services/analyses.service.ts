@@ -1,6 +1,7 @@
 import { pool } from "../config/database.js";
 import { AppError } from "../errors/AppError.js";
 import type { CreateAnalysisInput } from "../schemas/analyses.schema.js";
+import { createAIService } from "./ai/ai.factory.js";
 
 export const createAnalysis = async (input: CreateAnalysisInput) => {
   const { resumeId, jobId } = input;
@@ -34,20 +35,14 @@ export const createAnalysis = async (input: CreateAnalysisInput) => {
   const resume = resumeResult.rows[0];
   const job = jobResult.rows[0];
 
-  // Temporary mock analysis.
-  // We will replace this with a real LLM later.
-  const result = {
-    matchedSkills: ["TypeScript", "Node.js", "PostgreSQL", "Docker"],
-    missingSkills: ["Next.js", "RAG", "AI Agents"],
-    strengths: ["Backend development", "REST API development"],
-    recommendations: [
-      "Improve Next.js experience",
-      "Build more AI agent projects",
-    ],
-    summary: `Analysis generated for "${resume.title}" against "${job.title}".`,
-  };
+  const aiService = createAIService();
 
-  const matchScore = 78;
+  const aiResult = await aiService.analyzeJobApplication({
+    resume: resume.content,
+    jobDescription: job.description,
+  });
+
+  const matchScore = aiResult.matchScore;
 
   const analysisResult = await pool.query(
     `
@@ -66,7 +61,7 @@ export const createAnalysis = async (input: CreateAnalysisInput) => {
         result,
         created_at;
     `,
-    [resumeId, jobId, matchScore, JSON.stringify(result)],
+    [resumeId, jobId, matchScore, JSON.stringify(aiResult)],
   );
 
   return analysisResult.rows[0];
