@@ -45,6 +45,13 @@ export const createAnalysis = async (
     jobDescription: job.description,
   });
 
+  const matchScore =
+  aiResult.scoreBreakdown.skillsMatch +
+  aiResult.scoreBreakdown.experienceMatch +
+  aiResult.scoreBreakdown.requirementsMatch +
+  aiResult.scoreBreakdown.educationMatch +
+  aiResult.scoreBreakdown.otherFactors;
+
   const analysisResult = await pool.query(
     `
       INSERT INTO analyses (
@@ -68,8 +75,11 @@ export const createAnalysis = async (
       userId,
       resumeId,
       jobId,
-      aiResult.matchScore,
-      JSON.stringify(aiResult),
+       matchScore,
+    JSON.stringify({
+      ...aiResult,
+      matchScore,
+    }),
     ],
   );
 

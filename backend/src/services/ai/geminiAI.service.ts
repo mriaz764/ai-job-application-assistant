@@ -46,27 +46,60 @@ export class GeminiAIService implements AIService {
       const interaction = await client.interactions.create({
         model: "gemini-3.8-flash",
 
-        input: `
-        You are an expert technical recruiter and career advisor.
+    input: `
+          You are an expert technical recruiter and career advisor.
 
-        Analyze the candidate's resume against the job description.
+          Analyze the candidate's resume against the job description.
 
-        Your analysis must be:
-        - Objective
-        - Specific
-        - Based only on the provided resume and job description
-        - Useful for improving the candidate's application
+          Your analysis must be:
+          - Objective
+          - Specific
+          - Based only on the provided resume and job description
+          - Useful for improving the candidate's application
 
-        Calculate a match score from 0 to 100.
+          Calculate the candidate's match using this scoring framework:
 
-        CANDIDATE RESUME:
+          1. Skills match: 0-40 points
+            Evaluate how closely the candidate's technical and professional skills
+            match the skills required by the job.
 
-        ${input.resume}
+          2. Experience match: 0-25 points
+            Evaluate how closely the candidate's professional experience,
+            responsibilities, seniority, and domain experience match the role.
 
-        JOB DESCRIPTION:
+          3. Job requirements match: 0-20 points
+            Evaluate how many important job requirements the candidate satisfies.
 
-        ${input.jobDescription}
-    `,
+          4. Education match: 0-10 points
+            Evaluate how well the candidate's education matches the stated
+            education requirements or expectations.
+
+          5. Other relevant factors: 0-5 points
+            Consider other relevant factors explicitly supported by the resume
+            and job description.
+
+          IMPORTANT:
+          - Do not invent experience, skills, qualifications, or achievements.
+          - Use only information present in the resume and job description.
+          - Each score must remain within its specified maximum.
+          - The backend will calculate the final match score from these categories.
+          - Do not return a separate final score.
+
+          Identify:
+          - Skills that match the job
+          - Skills that are missing
+          - Candidate strengths
+          - Candidate weaknesses
+          - Practical recommendations
+
+          CANDIDATE RESUME:
+
+          ${input.resume}
+
+          JOB DESCRIPTION:
+
+          ${input.jobDescription}
+        `,
 
         response_format: {
           type: "text",

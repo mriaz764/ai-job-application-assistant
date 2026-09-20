@@ -1,7 +1,13 @@
 import { z } from "zod";
 
 export const aiAnalysisResultSchema = z.object({
-  matchScore: z.number().int().min(0).max(100),
+  scoreBreakdown: z.object({
+    skillsMatch: z.number().int().min(0).max(40),
+    experienceMatch: z.number().int().min(0).max(25),
+    requirementsMatch: z.number().int().min(0).max(20),
+    educationMatch: z.number().int().min(0).max(10),
+    otherFactors: z.number().int().min(0).max(5),
+  }),
 
   summary: z.string().min(1),
 

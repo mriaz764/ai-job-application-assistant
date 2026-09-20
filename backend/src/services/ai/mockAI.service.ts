@@ -10,15 +10,34 @@ export class MockAIService implements AIService {
     input: AIAnalysisInput,
   ): Promise<AIAnalysisResult> {
     const result = {
-      matchScore: 78,
+      scoreBreakdown: {
+        skillsMatch: 32,
+        experienceMatch: 20,
+        requirementsMatch: 16,
+        educationMatch: 8,
+        otherFactors: 4,
+      },
 
-      summary: `Mock analysis generated for the provided resume and job description.`,
+      summary:
+        "The candidate has strong backend development experience that aligns with several requirements of the role.",
 
-      matchedSkills: ["TypeScript", "Node.js", "PostgreSQL", "Docker"],
+      matchedSkills: [
+        "TypeScript",
+        "Node.js",
+        "PostgreSQL",
+        "Docker",
+      ],
 
-      missingSkills: ["Next.js", "RAG", "AI Agents"],
+      missingSkills: [
+        "Next.js",
+        "RAG",
+        "AI Agents",
+      ],
 
-      strengths: ["Backend development", "REST API development"],
+      strengths: [
+        "Backend development",
+        "REST API development",
+      ],
 
       weaknesses: [
         "Limited Next.js experience",
@@ -27,8 +46,8 @@ export class MockAIService implements AIService {
 
       recommendations: [
         "Improve Next.js experience",
-        "Build a RAG project",
         "Build an AI agent using tool calling",
+        "Build a RAG project",
       ],
     };
 
