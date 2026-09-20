@@ -5,8 +5,8 @@ import type {
   UpdateResumeInput,
 } from "../schemas/resumes.schema.js";
 
-export const createResume = async (input: CreateResumeInput) => {
-  const { userId, title, content } = input;
+export const createResume = async ( userId: number,input: CreateResumeInput) => {
+  const { title, content } = input;
 
   try {
     const result = await pool.query(
@@ -35,32 +35,37 @@ export const createResume = async (input: CreateResumeInput) => {
   }
 };
 
-export const getResumes = async () => {
+export const getResumes = async (userId: number) => {
   const result = await pool.query(
     `
       SELECT id, user_id, title, content, created_at
       FROM resumes
+      WHERE user_id = $1
       ORDER BY id ASC;
     `,
+    [userId]
   );
 
   return result.rows;
 };
 
-export const getResumeById = async (id: number) => {
+export const getResumeById = async ( userId: number,resumeId: number,) => {
   const result = await pool.query(
     `
       SELECT id, user_id, title, content, created_at
       FROM resumes
-      WHERE id = $1;
+      WHERE id = $1 AND user_id = $2;
     `,
-    [id],
+    [resumeId, userId],
   );
 
   return result.rows[0];
 };
 
-export const updateResume = async (id: number, input: UpdateResumeInput) => {
+export const updateResume = async (
+  userId: number,
+  resumeId: number,
+  input: UpdateResumeInput) => {
   const { title, content } = input;
 
   const result = await pool.query(
@@ -68,23 +73,23 @@ export const updateResume = async (id: number, input: UpdateResumeInput) => {
       UPDATE resumes
       SET title = $1,
           content = $2
-      WHERE id = $3
+      WHERE id = $3 AND user_id = $4
       RETURNING id, user_id, title, content, created_at;
     `,
-    [title, content, id],
+    [title, content, resumeId, userId],
   );
 
   return result.rows[0];
 };
 
-export const deleteResume = async (id: number) => {
+export const deleteResume = async (userId: number, resumeId: number) => {
   const result = await pool.query(
     `
       DELETE FROM resumes
-      WHERE id = $1
+      WHERE id = $1 AND user_id = $2
       RETURNING id;
     `,
-    [id],
+    [resumeId, userId],
   );
 
   return result.rows[0];

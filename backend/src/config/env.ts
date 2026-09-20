@@ -19,6 +19,8 @@ const envSchema = z
 
     GEMINI_API_KEY: z.string().optional(),
     OPENAI_API_KEY: z.string().optional(),
+
+    JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
   })
   .superRefine((env, ctx) => {
     if (env.AI_PROVIDER === "gemini" && !env.GEMINI_API_KEY) {

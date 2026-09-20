@@ -24,7 +24,7 @@ export const createResumeController = asyncHandler(async (req, res) => {
     });
   }
 
-  const resume = await createResume(result.data);
+  const resume = await createResume(req.user!.id, result.data);
 
   return res.status(201).json({
     message: "Resume created successfully",
@@ -32,8 +32,8 @@ export const createResumeController = asyncHandler(async (req, res) => {
   });
 });
 
-export const getResumesController = asyncHandler(async (_req, res) => {
-  const resumes = await getResumes();
+export const getResumesController = asyncHandler(async (req, res) => {
+  const resumes = await getResumes(req.user!.id);
 
   return res.json({
     resumes,
@@ -49,7 +49,7 @@ export const getResumeByIdController = asyncHandler(async (req, res) => {
     });
   }
 
-  const resume = await getResumeById(id);
+  const resume = await getResumeById(req.user!.id, id);
 
   if (!resume) {
     return res.status(404).json({
@@ -80,7 +80,7 @@ export const updateResumeController = asyncHandler(async (req, res) => {
     });
   }
 
-  const resume = await updateResume(id, result.data);
+  const resume = await updateResume(req.user!.id, id, result.data);
 
   if (!resume) {
     return res.status(404).json({
@@ -103,7 +103,7 @@ export const deleteResumeController = asyncHandler(async (req, res) => {
     });
   }
 
-  const resume = await deleteResume(id);
+  const resume = await deleteResume(req.user!.id, id);
 
   if (!resume) {
     return res.status(404).json({

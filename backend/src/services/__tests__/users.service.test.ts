@@ -7,7 +7,8 @@ const mockUser = {
   created_at: new Date(),
 };
 
-const mockQuery = jest.fn();
+const mockQuery =
+  jest.fn<(query: string, values?: unknown[]) => Promise<{ rows: any[] }>>();
 
 jest.unstable_mockModule("../../config/database.js", () => ({
   pool: {
@@ -59,6 +60,7 @@ describe("createUser", () => {
     const input = {
       name: "Ali Khan",
       email: "ali@example.com",
+      password: "password123",
     };
 
     const createdUser = {
@@ -75,8 +77,8 @@ describe("createUser", () => {
     const result = await createUser(input);
 
     expect(mockQuery).toHaveBeenCalledWith(
-      expect.stringContaining("INSERT INTO users (name, email)"),
-      [input.name, input.email],
+      expect.stringContaining("INSERT INTO users (name, email, password_hash)"),
+      [input.name, input.email, expect.any(String)],
     );
 
     expect(result).toEqual(createdUser);
@@ -85,6 +87,7 @@ describe("createUser", () => {
     const input = {
       name: "Ali Khan",
       email: "riaz@example.com",
+      password: "password123",
     };
 
     const databaseError = Object.assign(
