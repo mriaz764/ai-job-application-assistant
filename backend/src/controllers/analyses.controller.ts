@@ -1,9 +1,11 @@
 import { createAnalysisSchema } from "../schemas/analyses.schema.js";
+
 import {
   createAnalysis,
   getAnalyses,
   getAnalysisById,
 } from "../services/analyses.service.js";
+
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { parseId } from "../utils/parseId.js";
 
@@ -17,7 +19,10 @@ export const createAnalysisController = asyncHandler(async (req, res) => {
     });
   }
 
-  const analysis = await createAnalysis(result.data);
+  const analysis = await createAnalysis(
+    req.user!.id,
+    result.data,
+  );
 
   return res.status(201).json({
     message: "Analysis created successfully",
@@ -25,8 +30,8 @@ export const createAnalysisController = asyncHandler(async (req, res) => {
   });
 });
 
-export const getAnalysesController = asyncHandler(async (_req, res) => {
-  const analyses = await getAnalyses();
+export const getAnalysesController = asyncHandler(async (req, res) => {
+  const analyses = await getAnalyses(req.user!.id);
 
   return res.json({
     analyses,
@@ -42,7 +47,10 @@ export const getAnalysisByIdController = asyncHandler(async (req, res) => {
     });
   }
 
-  const analysis = await getAnalysisById(id);
+  const analysis = await getAnalysisById(
+    req.user!.id,
+    id,
+  );
 
   if (!analysis) {
     return res.status(404).json({
