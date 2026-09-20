@@ -1,9 +1,15 @@
 import { pool } from "../config/database.js";
 import { AppError } from "../errors/AppError.js";
-import type { CreateJobInput, UpdateJobInput } from "../schemas/jobs.schema.js";
+import type {
+  CreateJobInput,
+  UpdateJobInput,
+} from "../schemas/jobs.schema.js";
 
-export const createJob = async (input: CreateJobInput) => {
-  const { userId, title, company, description } = input;
+export const createJob = async (
+  userId: number,
+  input: CreateJobInput,
+) => {
+  const { title, company, description } = input;
 
   try {
     const result = await pool.query(
@@ -19,45 +25,45 @@ export const createJob = async (input: CreateJobInput) => {
   } catch (error) {
     console.error("Database error:", error);
 
-    if (
-      typeof error === "object" &&
-      error !== null &&
-      "code" in error &&
-      error.code === "23503"
-    ) {
-      throw new AppError("User not found", 404);
-    }
-
     throw new AppError("Failed to create job", 500);
   }
 };
 
-export const getJobs = async () => {
+export const getJobs = async (userId: number) => {
   const result = await pool.query(
     `
       SELECT id, user_id, title, company, description, created_at
       FROM jobs
+      WHERE user_id = $1
       ORDER BY id ASC;
     `,
+    [userId],
   );
 
   return result.rows;
 };
 
-export const getJobById = async (id: number) => {
+export const getJobById = async (
+  userId: number,
+  id: number,
+) => {
   const result = await pool.query(
     `
       SELECT id, user_id, title, company, description, created_at
       FROM jobs
-      WHERE id = $1;
+      WHERE id = $1 AND user_id = $2;
     `,
-    [id],
+    [id, userId],
   );
 
   return result.rows[0];
 };
 
-export const updateJob = async (id: number, input: UpdateJobInput) => {
+export const updateJob = async (
+  userId: number,
+  id: number,
+  input: UpdateJobInput,
+) => {
   const { title, company, description } = input;
 
   const result = await pool.query(
@@ -66,23 +72,26 @@ export const updateJob = async (id: number, input: UpdateJobInput) => {
       SET title = $1,
           company = $2,
           description = $3
-      WHERE id = $4
+      WHERE id = $4 AND user_id = $5
       RETURNING id, user_id, title, company, description, created_at;
     `,
-    [title, company ?? null, description, id],
+    [title, company ?? null, description, id, userId],
   );
 
   return result.rows[0];
 };
 
-export const deleteJob = async (id: number) => {
+export const deleteJob = async (
+  userId: number,
+  id: number,
+) => {
   const result = await pool.query(
     `
       DELETE FROM jobs
-      WHERE id = $1
+      WHERE id = $1 AND user_id = $2
       RETURNING id;
     `,
-    [id],
+    [id, userId],
   );
 
   return result.rows[0];

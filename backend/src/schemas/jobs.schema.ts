@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const createJobSchema = z.object({
-  userId: z.coerce.number().int().positive(),
   title: z.string().min(1, "Title is required"),
   company: z.string().optional(),
   description: z.string().min(1, "Description is required"),

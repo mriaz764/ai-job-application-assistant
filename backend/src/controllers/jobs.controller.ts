@@ -1,4 +1,7 @@
-import { createJobSchema, updateJobSchema } from "../schemas/jobs.schema.js";
+import {
+  createJobSchema,
+  updateJobSchema,
+} from "../schemas/jobs.schema.js";
 
 import {
   createJob,
@@ -21,7 +24,7 @@ export const createJobController = asyncHandler(async (req, res) => {
     });
   }
 
-  const job = await createJob(result.data);
+  const job = await createJob(req.user!.id, result.data);
 
   return res.status(201).json({
     message: "Job created successfully",
@@ -29,8 +32,8 @@ export const createJobController = asyncHandler(async (req, res) => {
   });
 });
 
-export const getJobsController = asyncHandler(async (_req, res) => {
-  const jobs = await getJobs();
+export const getJobsController = asyncHandler(async (req, res) => {
+  const jobs = await getJobs(req.user!.id);
 
   return res.json({
     jobs,
@@ -46,7 +49,7 @@ export const getJobByIdController = asyncHandler(async (req, res) => {
     });
   }
 
-  const job = await getJobById(id);
+  const job = await getJobById(req.user!.id, id);
 
   if (!job) {
     return res.status(404).json({
@@ -77,7 +80,11 @@ export const updateJobController = asyncHandler(async (req, res) => {
     });
   }
 
-  const job = await updateJob(id, result.data);
+  const job = await updateJob(
+    req.user!.id,
+    id,
+    result.data,
+  );
 
   if (!job) {
     return res.status(404).json({
@@ -100,7 +107,7 @@ export const deleteJobController = asyncHandler(async (req, res) => {
     });
   }
 
-  const job = await deleteJob(id);
+  const job = await deleteJob(req.user!.id, id);
 
   if (!job) {
     return res.status(404).json({
