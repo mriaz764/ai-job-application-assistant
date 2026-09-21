@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { loginSchema } from "../schemas/auth.schema.js";
 import { login } from "../services/auth.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { env } from "../config/env.js";
 
 export const loginController = asyncHandler(
   async (req: Request, res: Response) => {
@@ -16,6 +17,14 @@ export const loginController = asyncHandler(
     }
 
     const result = await login(parsed.data);
+
+    res.cookie("access_token", result.accessToken, {
+        httpOnly: true,
+        secure: env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 1000,
+        path: "/",
+      });
 
     return res.status(200).json({
       message: "Login successful",
@@ -32,3 +41,16 @@ export const getCurrentUserController = asyncHandler(
     });
   },
 );
+
+export const logoutController = asyncHandler(async (_req, res) => {
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+
+  return res.status(200).json({
+    message: "Logout successful",
+  });
+});

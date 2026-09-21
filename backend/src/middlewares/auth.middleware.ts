@@ -9,17 +9,18 @@ export const authMiddleware = async (
   next: NextFunction,
 ) => {
   try {
-    const authorization = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!authorization) {
-      throw new AppError("Authentication required", 401);
-    }
+    let token: string | undefined;
 
-    const [scheme, token] = authorization.split(" ");
-
-    if (scheme !== "Bearer" || !token) {
-      throw new AppError("Invalid authorization header", 401);
-    }
+    if (authHeader?.startsWith("Bearer ")) {
+        token = authHeader.substring(7);
+      } else {
+        token = req.cookies?.access_token;
+      }
+      if (!token) {
+        throw new AppError("Unauthorized", 401);
+      }
 
     const payload = await verifyAccessToken(token);
 

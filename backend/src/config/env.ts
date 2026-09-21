@@ -6,7 +6,7 @@ const envSchema = z
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-
+    FRONTEND_URL: z.string().url(),
     PORT: z.coerce.number().int().positive().default(3001),
 
     DATABASE_HOST: z.string().min(1),
