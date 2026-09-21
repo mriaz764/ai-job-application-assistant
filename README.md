@@ -4,7 +4,7 @@ An AI-powered full-stack application that helps job seekers analyze their resume
 
 ## 🚧 Project Status
 
-**Status: In Development — Active Development**
+**Status: In Development — Core Application Functional**
 
 The project is being developed incrementally as a practical Fullstack AI Engineering project.
 
@@ -32,6 +32,7 @@ The project is being developed incrementally as a practical Fullstack AI Enginee
 - [x] User authentication
 - [x] Password hashing with bcrypt
 - [x] JWT-based authentication
+- [x] HttpOnly cookie-based web sessions
 - [x] Protected API routes
 - [x] User-specific resource authorization
 - [x] Resume ownership protection
@@ -64,19 +65,48 @@ The project is being developed incrementally as a practical Fullstack AI Enginee
 
 - [x] Jest testing setup
 - [x] Initial service unit tests
-- [ ] Comprehensive test coverage
+- [x] Frontend validation and authentication flow verification
+- [x] Protected route and session restoration verification
+- [ ] Comprehensive frontend automated test coverage
+- [ ] Comprehensive backend test coverage
+
+## 🧪 Frontend Validation Status
+
+The following frontend flows have been manually verified:
+
+- [x] Registration validation
+- [x] Login validation
+- [x] Resume required-field validation
+- [x] Job required-field validation
+- [x] Analysis resume/job selection validation
+- [x] Disabled submit states
+- [x] Logout flow
+- [x] Protected dashboard behavior
+- [x] Session restoration after refresh
+- [x] Unauthorized access handling
+- [x] Empty states and empty-state actions
+
+Frontend validation complements backend Zod validation. The backend remains the authoritative validation layer for API requests.
 
 ## 🔨 Currently In Progress
 
 ### Frontend Application
 
-- [ ] Frontend architecture
-- [ ] Authentication UI
-- [ ] API client
-- [ ] Resume management UI
-- [ ] Job management UI
-- [ ] AI analysis workflow
-- [ ] Analysis results dashboard
+- [x] Frontend architecture
+- [x] Authentication UI
+- [x] API client
+- [x] User registration
+- [x] Login and session management
+- [x] Resume management UI
+- [x] Job management UI
+- [x] AI analysis workflow
+- [x] Analysis results dashboard
+- [x] Dashboard activity overview
+- [x] Read-only user profile
+- [x] Shared frontend UI components
+- [x] Frontend validation and error handling
+- [ ] Frontend automated testing
+- [ ] Final responsive/production review
 
 ## 📋 Planned
 
@@ -122,6 +152,32 @@ The project is being developed incrementally as a practical Fullstack AI Enginee
 
 ---
 
+## 🔄 Current User Workflow
+
+```text
+Register / Login
+      ↓
+Dashboard
+      ↓
+Save Resume
+      ↓
+Save Job
+      ↓
+Select Resume + Job
+      ↓
+Run AI Analysis
+      ↓
+Review Match Score
+      ↓
+Review Skills, Strengths, Weaknesses
+      ↓
+Review Recommendations
+```
+
+The current application is intentionally focused on the **job-seeker use case**.
+
+A separate recruiter/ATS application may be developed in the future, but it is not part of the current project scope.
+
 ## 🏗️ Architecture
 
 The current architecture follows a layered full-stack design:
@@ -159,6 +215,8 @@ The current architecture follows a layered full-stack design:
 - React
 - TypeScript
 - Tailwind CSS
+- TanStack React Query
+- Zustand
 
 ### Backend
 
@@ -257,7 +315,7 @@ The goal is to build the project incrementally while applying production-oriente
 Phase 0   Architecture                 ✅
 Phase 1   Project Setup                ✅
 Phase 2   Backend                      ✅
-Phase 3   Frontend                     🔨 In Progress
+Phase 3   Frontend                     ✅ Core implementation complete
 Phase 4   LLM Integration              ✅
 Phase 5   AI Job Analysis              ✅
 Phase 6   RAG                          📋 Planned
