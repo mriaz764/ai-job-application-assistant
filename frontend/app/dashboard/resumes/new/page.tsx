@@ -56,7 +56,7 @@ export default function NewResumePage() {
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
                 placeholder="e.g. Senior Flutter Developer"
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-slate-500"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
               />
             </div>
 
@@ -74,7 +74,7 @@ export default function NewResumePage() {
                 onChange={(event) => setContent(event.target.value)}
                 rows={16}
                 placeholder="Paste your resume content here..."
-                className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-slate-500"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
               />
             </div>
 
