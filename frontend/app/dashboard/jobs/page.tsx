@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { routes } from "@/lib/routes";
 import { useDeleteJob, useJobs } from "@/lib/hooks/use-jobs";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function JobsPage() {
   const { data: jobs, isLoading, isError } = useJobs();
@@ -67,20 +68,12 @@ export default function JobsPage() {
       )}
 
       {!isLoading && !isError && jobs && jobs.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <h2 className="text-lg font-semibold text-slate-900">No jobs yet</h2>
-
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-            Save a job opportunity so you can analyze it against your resume.
-          </p>
-
-          <Link
-            href={`${routes.jobs}/new`}
-            className="mt-6 inline-flex rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
-          >
-            Add your first job
-          </Link>
-        </div>
+        <EmptyState
+          title="No jobs yet"
+          description="Save a job opportunity to start building your job workspace."
+          actionLabel="Add a job"
+          actionHref={`${routes.jobs}/new`}
+        />
       )}
 
       {!isLoading && !isError && jobs && jobs.length > 0 && (

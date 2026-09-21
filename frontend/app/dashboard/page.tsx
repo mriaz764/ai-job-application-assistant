@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
+import { PageHeader } from "@/components/ui/page-header";
 import { routes } from "@/lib/routes";
 import { useAnalyses } from "@/lib/hooks/use-analyses";
 import { useJobs } from "@/lib/hooks/use-jobs";
@@ -36,18 +36,11 @@ export default function DashboardPage() {
   return (
     <div>
       {/* Page heading */}
-      <div className="mb-8">
-        <p className="text-sm font-medium text-slate-500">Overview</p>
-
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
-          Dashboard
-        </h1>
-
-        <p className="mt-2 max-w-2xl text-slate-600">
-          Manage your resumes, job opportunities, and AI-powered job analyses
-          from one place.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Overview"
+        title="Dashboard"
+        description="Manage your resumes, job opportunities, and AI-powered job analyses from one place."
+      />
 
       {/* Workspace overview */}
       <section className="mb-8">

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { routes } from "@/lib/routes";
 import { useAnalyses } from "@/lib/hooks/use-analyses";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function AnalysesPage() {
   const { data: analyses, isLoading, isError } = useAnalyses();
@@ -50,23 +51,12 @@ export default function AnalysesPage() {
       )}
 
       {!isLoading && !isError && analyses && analyses.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <h2 className="text-lg font-semibold text-slate-900">
-            No analyses yet
-          </h2>
-
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-            Select a resume and a job opportunity to create your first
-            AI-powered analysis.
-          </p>
-
-          <Link
-            href={`${routes.analyses}/new`}
-            className="mt-6 inline-flex rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
-          >
-            Create your first analysis
-          </Link>
-        </div>
+        <EmptyState
+          title="No analyses yet"
+          description="Create an analysis to compare your resume with a saved job."
+          actionLabel="Create analysis"
+          actionHref={`${routes.analyses}/new`}
+        />
       )}
 
       {!isLoading && !isError && analyses && analyses.length > 0 && (

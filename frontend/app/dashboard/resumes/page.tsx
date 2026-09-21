@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { useDeleteResume, useResumes } from "@/lib/hooks/use-resumes";
 import { routes } from "@/lib/routes";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function ResumesPage() {
   const { data: resumes, isLoading, isError } = useResumes();
@@ -61,15 +62,12 @@ export default function ResumesPage() {
           )}
 
           {!isLoading && !isError && resumes?.length === 0 && (
-            <div className="rounded-xl bg-white p-10 text-center shadow-sm">
-              <h2 className="text-lg font-semibold text-slate-900">
-                No resumes yet
-              </h2>
-
-              <p className="mt-2 text-slate-500">
-                Add your first resume to start analyzing job opportunities.
-              </p>
-            </div>
+            <EmptyState
+              title="No resumes yet"
+              description="Create a resume to start analyzing your fit for job opportunities."
+              actionLabel="Create resume"
+              actionHref={`${routes.resumes}/new`}
+            />
           )}
 
           {!isLoading && !isError && resumes && resumes.length > 0 && (

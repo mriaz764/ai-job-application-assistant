@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/lib/stores/auth-store";
-
+import { PageHeader } from "@/components/ui/page-header";
 export default function ProfilePage() {
   const user = useAuthStore((state) => state.user);
 
@@ -20,17 +20,11 @@ export default function ProfilePage() {
   return (
     <div>
       {/* Page heading */}
-      <div className="mb-8">
-        <p className="text-sm font-medium text-slate-500">Account</p>
-
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
-          Profile
-        </h1>
-
-        <p className="mt-2 max-w-2xl text-slate-600">
-          View your account information and authentication details.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Account"
+        title="Profile"
+        description="View your account information and authentication details."
+      />
 
       {/* Profile overview */}
       <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
