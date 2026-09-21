@@ -5,6 +5,11 @@ export interface User {
   name: string;
   email: string;
 }
+export interface RegisterInput {
+  name: string;
+  email: string;
+  password: string;
+}
 
 interface LoginResponse {
   message: string;
@@ -26,6 +31,13 @@ export const authApi = {
     });
   },
 
+   register(data: RegisterInput) {
+    return apiClient.post<LoginResponse>(
+      "/api/auth/register",
+      data,
+      { auth: false },
+    );
+  },
   getCurrentUser() {
     return apiClient.get<CurrentUserResponse>("/api/auth/me");
   },

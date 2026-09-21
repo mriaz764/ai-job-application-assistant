@@ -1,10 +1,11 @@
 import bcrypt from "bcrypt";
 
 import { AppError } from "../errors/AppError.js";
-import { getUserById, getUserWithPasswordByEmail } from "./users.service.js";
+import { createUser, getUserById, getUserWithPasswordByEmail } from "./users.service.js";
 import { generateAccessToken } from "../utils/jwt.js";
 
 import type { LoginInput } from "../schemas/auth.schema.js";
+import { CreateUserInput } from "../schemas/users.schema.js";
 
 export const login = async (input: LoginInput) => {
   const { email, password } = input;
@@ -26,6 +27,21 @@ export const login = async (input: LoginInput) => {
   const accessToken = await generateAccessToken(user.id);
 
     return {
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    },
+    accessToken,
+  };
+};
+
+export const register = async (input: CreateUserInput) => {
+  const user = await createUser(input);
+
+  const accessToken = await generateAccessToken(user.id);
+
+  return {
     user: {
       id: user.id,
       name: user.name,
