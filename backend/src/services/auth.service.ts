@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 import { AppError } from "../errors/AppError.js";
-import { getUserWithPasswordByEmail } from "./users.service.js";
+import { getUserById, getUserWithPasswordByEmail } from "./users.service.js";
 import { generateAccessToken } from "../utils/jwt.js";
 
 import type { LoginInput } from "../schemas/auth.schema.js";
@@ -32,5 +32,19 @@ export const login = async (input: LoginInput) => {
       email: user.email,
     },
     accessToken,
+  };
+};
+
+export const profile = async (userId: number) => {
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
   };
 };

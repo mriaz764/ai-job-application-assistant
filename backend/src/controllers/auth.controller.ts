@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
 import { loginSchema } from "../schemas/auth.schema.js";
-import { login } from "../services/auth.service.js";
+import { login,profile } from "../services/auth.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { env } from "../config/env.js";
 
@@ -36,8 +36,11 @@ export const loginController = asyncHandler(
 
 export const getCurrentUserController = asyncHandler(
   async (req: Request, res: Response) => {
+    const result = await profile(req.user!.id);
+
     return res.status(200).json({
-      user: req.user,
+      message: "Current user",
+      user: result,
     });
   },
 );
