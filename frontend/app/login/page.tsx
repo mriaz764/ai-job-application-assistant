@@ -124,7 +124,7 @@ export default function LoginPage() {
               {login.isPending ? "Signing in..." : "Sign in"}
             </button>
             <div className="mt-6 text-center text-sm text-slate-600">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href={routes.register}
                 className="font-semibold text-slate-900 hover:text-slate-600"
