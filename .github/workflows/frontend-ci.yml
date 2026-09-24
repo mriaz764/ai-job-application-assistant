@@ -15,7 +15,8 @@ jobs:
   frontend-ci:
     name: Frontend CI
     runs-on: ubuntu-latest
-
+    env:
+      NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
     defaults:
       run:
         working-directory: frontend
